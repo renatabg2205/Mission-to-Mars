@@ -129,7 +129,6 @@ def hemispheres(browser):
 
     for path in hemisph_div_item_paths:
         hemisph_url = astropedia_url + path
-        #print(f'hemisph_url: {hemisph_url}')
         
         # Use browser to visit the URL
         browser.visit(hemisph_url)
@@ -141,11 +140,9 @@ def hemispheres(browser):
         try:
             #Find the title inside an h2 tag with a class of 'title'
             title = download_soup.find('h2', class_='title').get_text()
-            #print(f'title: {title}')
             
             #Find the image url (href) inside a li tag
             img_url = download_soup.find('li').a['href']
-            #print(f'img_url: {img_url}')
         
         except AttributeError:
             title = None
