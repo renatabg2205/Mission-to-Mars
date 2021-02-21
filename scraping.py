@@ -18,6 +18,7 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres": hemispheres(browser),
         "last_modified": dt.datetime.now()
     }
 
@@ -98,6 +99,63 @@ def mars_facts():
 
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+# ## Hemispheres
+
+def hemispheres(browser):
+
+    # Use browser to visit the URL 
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
+
+    # Create a list to hold the images and titles
+    hemisphere_image_urls = []
+
+    # Parse the resulting html with soup
+    html = browser.html
+    hemisph_soup = soup(html, 'html.parser')
+
+    #Write code to retrieve the image urls and titles for each hemisphere
+    hemisph_div_item = hemisph_soup.find_all('div', class_='item')
+
+    hemisph_div_item_paths = []
+
+    for div_item in hemisph_div_item:
+        hemisph_path = div_item.find('a')['href']
+        hemisph_div_item_paths.append(hemisph_path)
+
+    astropedia_url = 'https://astrogeology.usgs.gov'
+    hemispheres = {}
+
+    for path in hemisph_div_item_paths:
+        hemisph_url = astropedia_url + path
+        #print(f'hemisph_url: {hemisph_url}')
+        
+        # Use browser to visit the URL
+        browser.visit(hemisph_url)
+        
+        # Parse the resulting html with soup
+        html = browser.html
+        download_soup = soup(html, 'html.parser')
+        
+        #Find the title inside an h2 tag with a class of 'title'
+        title = download_soup.find('h2', class_='title').get_text()
+        #print(f'title: {title}')
+        
+        #Find the image url (href) inside a li tag
+        img_url = download_soup.find('li').a['href']
+        #print(f'img_url: {img_url}')
+        
+        # Store data in a dictionary
+        hemispheres = {
+            'img_url': img_url,
+            'title': title
+        }
+        #Append the dictionary to the list
+        hemisphere_image_urls.append(hemispheres)    
+
+    return hemisphere_image_urls
+
 
 if __name__ == "__main__":
     # If running as script, print scraped data
