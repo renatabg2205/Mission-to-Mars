@@ -26,5 +26,7 @@ Update the web app to make it mobile-responsive, and add Bootstrap components.
 ![deliverable3.PNG](images/deliverable3.PNG)
 
 iPhone X:
-![deliverable3_iPhoneX.PNG](images/deliverable3_iPhoneX.PNG)
+![deliverable3_iPhoneX.png](images/deliverable3_iPhoneX.png)
+
+
 
