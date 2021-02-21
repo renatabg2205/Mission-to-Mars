@@ -138,14 +138,19 @@ def hemispheres(browser):
         html = browser.html
         download_soup = soup(html, 'html.parser')
         
-        #Find the title inside an h2 tag with a class of 'title'
-        title = download_soup.find('h2', class_='title').get_text()
-        #print(f'title: {title}')
+        try:
+            #Find the title inside an h2 tag with a class of 'title'
+            title = download_soup.find('h2', class_='title').get_text()
+            #print(f'title: {title}')
+            
+            #Find the image url (href) inside a li tag
+            img_url = download_soup.find('li').a['href']
+            #print(f'img_url: {img_url}')
         
-        #Find the image url (href) inside a li tag
-        img_url = download_soup.find('li').a['href']
-        #print(f'img_url: {img_url}')
-        
+        except AttributeError:
+            title = None
+            img_url = None
+
         # Store data in a dictionary
         hemispheres = {
             'img_url': img_url,
